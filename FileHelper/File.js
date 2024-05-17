@@ -43,12 +43,12 @@ function cFile(location,data){
     })
 }
 
-const rfile = async (location, errorFromServer) => {
+const rfile = async (location) => {
     const encoding = {encoding: 'utf-8'}
-    fs.readFile(location, encoding, (errorFromServer, data) => {
-        if (errorFromServer) {
-            console.log("Error "+ errorFromServer)
-            throw errorFromServer;
+    fs.readFile(location, encoding, (error, data) => {
+        if (error) {
+            console.log("Error "+ error)
+            throw error;
         }
         return data
     }).then((data)=>{
