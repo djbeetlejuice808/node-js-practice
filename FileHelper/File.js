@@ -62,7 +62,6 @@ function wfile(){
 
 module.exports = {
     cFile,  
-    cFile_v2,
     cDir,
     rfile,
     wfile
