@@ -13,7 +13,7 @@ var path = require('path')
  * 
  */
 
-function cDir(directoryName, directoryLocation = { driver : 'c:/' }){
+const cDir = (directoryName, directoryLocation = { driver : 'c:/' }) =>{
     const invalidPath =    !directoryLocation 
                         || directoryLocation.driver === undefined 
                         || !/^[a-zA-Z]:\/?(?:[^\/\s]+\/?)*$/.test(directoryLocation.driver)
@@ -34,36 +34,19 @@ function cDir(directoryName, directoryLocation = { driver : 'c:/' }){
     const directoryexist = fs.existsSync(absolutePath)
     if (directoryexist) return absolutePath
     else return fs.mkdirSync(absolutePath, { recursive: true });
-    
 }
  
-function cFile(location,data){
-    return fs.appendFile(location, data, error => {
-        if (error) return error
+const cFile = async (location,data) => {
+    const status = await new Promise((resolve, rejects) => {
+        return fs.appendFile(location, data, error => {
+            if (error) return rejects(error)            
+        })
     })
 }
 
 const rfile = async (location) => {
-    const encoding = {encoding: 'utf-8'}
-    fs.readFile(location, encoding, (error, data) => {
-        if (error) {
-            console.log("Error "+ error)
-            throw error;
-        }
-        return data
-    }).then((data)=>{
-        console.log(data);	
-        return data
-    }).catch((err)=>{
-        console.log(err);
-        throw err;	
-    })
-}
-
-
-const rfile_v2 = async (location) => {
     const file_content  = await new Promise((resolve,rejects) => {
-        return fs.readFile(location,{encoding: 'utf-8'}, (err,data) => {
+        return fs.readFile(location, { encoding: 'utf-8' }, (err,data) => {
             if (err) return rejects(err)
             return resolve(data)
         }
@@ -77,4 +60,10 @@ function wfile(){
 }
 
 
-module.exports = {cFile,cDir,rfile,rfile_v2}
+module.exports = {
+    cFile,  
+    cFile_v2,
+    cDir,
+    rfile,
+    wfile
+}
